@@ -1,12 +1,12 @@
 class avbotz_template(object):
-    NAME = "AV BOTz "
+    NAME = "YA_FILE_TO_LINK_BOT"
 
     DISCLAIMER = (
         "This website only provides a service to help you play your video online without downloading. "
         "You can report files or videos that contain issues like copyright infringement, +18 content, violence, etc."
     )
 
-    REPORT_LINK = "https://t.me/AV_SUPPORT_GROUP"
+    REPORT_LINK = "https://t.me/AkashDeveloperBot"
 
     COLOURS = {
         "header": {"background": "#48cffe", "color": "#ffffff"},
