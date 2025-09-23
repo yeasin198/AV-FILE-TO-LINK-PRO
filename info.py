@@ -22,7 +22,7 @@ ADMINS = list(map(int, environ.get('ADMINS', '7525127704').split()))  # List of 
 AUTH_CHANNEL = list(map(int, environ.get("AUTH_CHANNEL", "-1002767687123 -1002733797896").split()))  # Allowed channels for authorization
 
 # username add without @
-OWNER_USERNAME = environ.get("OWNER_USERNAME", 'YA_FILE_TO_LINK_BOT')  # Owner's username
+OWNER_USERNAME = environ.get("OWNER_USERNAME", 'AkashDeveloperBot')  # Owner's username
 BOT_USERNAME = environ.get("BOT_USERNAME", 'YA_FILE_TO_LINK_BOT')  # Bot's username
 
 # 🔗 Channel & Support Links
@@ -37,10 +37,10 @@ FSUB = environ.get("FSUB", True)  # Force Subscribe feature
 ENABLE_LIMIT = environ.get("ENABLE_LIMIT", True)  # Enable file limits
 BATCH_VERIFY = environ.get("BATCH_VERIFY", True)  # Verify files in batch
 IS_SHORTLINK = bool(environ.get('IS_SHORTLINK', True))  # Enable channel shortlink creation
-MAINTENANCE_MODE = environ.get("MAINTENANCE_MODE", False)  # Put bot in maintenance
-PROTECT_CONTENT = environ.get('PROTECT_CONTENT', False)  # Enable content protection
+MAINTENANCE_MODE = environ.get("MAINTENANCE_MODE", True)  # Put bot in maintenance
+PROTECT_CONTENT = environ.get('PROTECT_CONTENT', True)  # Enable content protection
 PUBLIC_FILE_STORE = environ.get('PUBLIC_FILE_STORE', True)  # Public or private file visibility
-BATCH_PROTECT_CONTENT = environ.get('BATCH_PROTECT_CONTENT', False)  # Batch file protection
+BATCH_PROTECT_CONTENT = environ.get('BATCH_PROTECT_CONTENT', True)  # Batch file protection
 
 # 🔗 Shortlink Configuration
 SHORTLINK_URL = environ.get('SHORTLINK_URL', 'gplinks.com')  # Shortener site
