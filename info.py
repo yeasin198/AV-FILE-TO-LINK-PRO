@@ -38,7 +38,7 @@ ENABLE_LIMIT = environ.get("ENABLE_LIMIT", True)  # Enable file limits
 BATCH_VERIFY = environ.get("BATCH_VERIFY", True)  # Verify files in batch
 IS_SHORTLINK = bool(environ.get('IS_SHORTLINK', True))  # Enable channel shortlink creation
 MAINTENANCE_MODE = environ.get("MAINTENANCE_MODE", False)  # Put bot in maintenance
-PROTECT_CONTENT = environ.get('PROTECT_CONTENT', True)  # Enable content protection
+PROTECT_CONTENT = environ.get('PROTECT_CONTENT', False)  # Enable content protection
 PUBLIC_FILE_STORE = environ.get('PUBLIC_FILE_STORE', True)  # Public or private file visibility
 BATCH_PROTECT_CONTENT = environ.get('BATCH_PROTECT_CONTENT', True)  # Batch file protection
 
@@ -89,5 +89,5 @@ HAS_SSL = str(getenv("HAS_SSL", False)).lower() in ("true", "1", "yes")  # Use H
 BIND_ADDRESS = getenv("WEB_SERVER_BIND_ADDRESS", "127.0.0.1")  # Server bind address
 FQDN = getenv("FQDN", "") or BIND_ADDRESS  # Full domain name or fallback to bind address
 PORT_SEGMENT = "" if NO_PORT else f":{PORT}/"  # Port in URL if not disabled
-PROTOCOL = "https" if HAS_SSL else "http"  # Protocol for URL
+PROTOCOL = "https" if HAS_SSL else "https"  # Protocol for URL
 URL = f"{PROTOCOL}://{FQDN}{PORT_SEGMENT}"  # Final generated base URL
