@@ -32,7 +32,7 @@ HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', 'https://t.me/+GUZdz3sbv8tmNmU1')  
 HOW_TO_OPEN = environ.get('HOW_TO_OPEN', 'https://t.me/+GUZdz3sbv8tmNmU1')  # File access guide link
 
 # ✅ Feature Toggles (True/False)
-VERIFY = environ.get("VERIFY", True)  # Enable user verification
+VERIFY = environ.get("VERIFY", False)  # Enable user verification
 FSUB = environ.get("FSUB", True)  # Force Subscribe feature
 ENABLE_LIMIT = environ.get("ENABLE_LIMIT", True)  # Enable file limits
 BATCH_VERIFY = environ.get("BATCH_VERIFY", True)  # Verify files in batch
