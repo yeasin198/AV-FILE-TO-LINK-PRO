@@ -51,7 +51,7 @@ DB_URL = environ.get('DATABASE_URI', "mongodb+srv://Filetolink270:Filetolink270@
 DB_NAME = environ.get('DATABASE_NAME', "cluster0")  # MongoDB database name
 
 # 📸 all Media (Images)
-QR_CODE = environ.get('QR_CODE', 'https://graph.org/file/6afb4093d5ec5c4176979.jpg')  # QR Code image
+QR_CODE = environ.get('QR_CODE', 'https://i.postimg.cc/mkHTmfYn/IMG-20251216-155449-415.jpg')  # QR Code image
 VERIFY_IMG = environ.get("VERIFY_IMG", "https://graph.org/file/1669ab9af68eaa62c3ca4.jpg")  # Verify success image
 AUTH_PICS = environ.get('AUTH_PICS', 'https://envs.sh/AwV.jpg')  # Auth step image
 PICS = environ.get('PICS', 'https://i.ibb.co/p9N7X6R/photo-2025-10-28-07-23-34-7566169969528930340.jpg')  # Default info image
