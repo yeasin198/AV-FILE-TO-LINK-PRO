@@ -425,7 +425,7 @@ async def delete_files_list(client, message):
 @Client.on_message(filters.command("about"))
 async def about(client, message):
     buttons = [[
-       InlineKeyboardButton('💻 sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ', url='https://t.me/TGLinkBase')
+       InlineKeyboardButton('💻 sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ', url='https://t.me/mlswtv')
     ],[
        InlineKeyboardButton('• ᴄʟᴏsᴇ •', callback_data='close_data')
     ]]
