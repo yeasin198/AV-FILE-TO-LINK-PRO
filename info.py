@@ -2,6 +2,8 @@ import re
 from os import environ, getenv
 from typing import Set, Optional, List, Dict
 from Script import script  # Custom script file with caption & other settings
+from pyrogram import Client, filters # কমান্ড হ্যান্ডেল করার জন্য
+from motor.motor_asyncio import AsyncIOMotorClient # ডাটাবেজের জন্য
 
 # 🚀 Bot Session and Token Information
 SESSION = environ.get('SESSION', 'Webavbot')  # Pyrogram client session name
@@ -10,18 +12,18 @@ API_ID = int(environ.get('API_ID', '28870226'))  # Telegram API ID
 API_HASH = environ.get('API_HASH', 'a5b1ff3f75941649bf5bc159782f0f00')  # Telegram API Hash
 BOT_TOKEN = environ.get('BOT_TOKEN', '672782:AAE3VrD2SewKmu6ytwU4H1vRtfc')  # Telegram Bot Token
 
-# 👑, Channels & Logs
+# 👑 Admins, Channels & Logs
 BIN_CHANNEL = int(environ.get("BIN_CHANNEL", '-1002792118372'))  # File storage channel
 LOG_CHANNEL = int(environ.get("LOG_CHANNEL", '-1003003272057'))  # General log channel
 PREMIUM_LOGS = int(environ.get("PREMIUM_LOGS", '-1002792118372'))  # Premium user actions log
 VERIFIED_LOG = int(environ.get('VERIFIED_LOG', '-1002792118372'))  # Verified user actions log
 SUPPORT_GROUP = int(environ.get("SUPPORT_GROUP", "-1001972036367"))
 
-# add admin IDs 11111 2222 3333 and add auth channel IDs -100XXX -100XXX -100XXX
+# Admin IDs and Auth Channel IDs
 ADMINS = list(map(int, environ.get('ADMINS', '728528543').split()))  # List of admin user IDs
 AUTH_CHANNEL = list(map(int, environ.get("AUTH_CHANNEL", "-1002735342037").split()))  # Allowed channels for authorization
 
-# username add without @
+# Username add without @
 OWNER_USERNAME = environ.get("OWNER_USERNAME", 'Ctgmovies270')  # Owner's username
 BOT_USERNAME = environ.get("BOT_USERNAME", 'CTGFileToLink_Bot')  # Bot's username
 
@@ -91,3 +93,62 @@ FQDN = getenv("FQDN", "") or BIND_ADDRESS
 PORT_SEGMENT = "" if NO_PORT else f":{PORT}"
 PROTOCOL = "https" if HAS_SSL else "http"
 URL = f"{PROTOCOL}://{FQDN}{PORT_SEGMENT}/"
+
+# 🔑 ================== MULTI-BOT API SYSTEM ================== 🔑
+# এটি অন্য বটের সাথে কানেক্ট করার জন্য ব্যবহৃত হবে
+API_KEY = environ.get('API_KEY', 'webav_secret_auth_key_2024') 
+
+# MongoDB Setup for Client Bots
+mongo_client = AsyncIOMotorClient(DB_URL)
+db = mongo_client[DB_NAME]
+client_bots_col = db['authorized_client_bots']
+
+# ১. নতুন ক্লায়েন্ট বট অ্যাড করা (/add_bot ID)
+@Client.on_message(filters.command("add_bot") & filters.user(ADMINS))
+async def add_client_bot(client, message):
+    if len(message.command) < 2:
+        return await message.reply("<b>ব্যবহার:</b> `/add_bot 12345678`")
+    try:
+        bot_id = int(message.command[1])
+        existing = await client_bots_col.find_one({"bot_id": bot_id})
+        if existing:
+            return await message.reply("⚠️ এই বট আইডি আগে থেকেই লিস্টে আছে।")
+        await client_bots_col.insert_one({"bot_id": bot_id})
+        await message.reply(f"✅ বট আইডি <code>{bot_id}</code> সফলভাবে যুক্ত করা হয়েছে।")
+    except ValueError:
+        await message.reply("❌ ভুল আইডি! শুধুমাত্র নম্বর দিন।")
+
+# ২. ক্লায়েন্ট বট ডিলিট করা (/del_bot ID)
+@Client.on_message(filters.command("del_bot") & filters.user(ADMINS))
+async def remove_client_bot(client, message):
+    if len(message.command) < 2:
+        return await message.reply("<b>ব্যবহার:</b> `/del_bot 12345678`")
+    try:
+        bot_id = int(message.command[1])
+        result = await client_bots_col.delete_one({"bot_id": bot_id})
+        if result.deleted_count > 0:
+            await message.reply(f"🗑️ বট আইডি <code>{bot_id}</code> লিস্ট থেকে ডিলিট করা হয়েছে।")
+        else:
+            await message.reply("❌ এই আইডিটি লিস্টে পাওয়া যায়নি।")
+    except ValueError:
+        await message.reply("❌ ভুল আইডি! শুধুমাত্র নম্বর দিন।")
+
+# ৩. অনুমোদিত বটের লিস্ট দেখা (/view_bots)
+@Client.on_message(filters.command("view_bots") & filters.user(ADMINS))
+async def list_client_bots(client, message):
+    bots = await client_bots_col.find().to_list(length=100)
+    if not bots:
+        return await message.reply("📭 বর্তমানে কোন ক্লায়েন্ট বট অনুমোদিত নেই।")
+    msg = "<b>🤖 অনুমোদিত ক্লায়েন্ট বট লিস্ট:</b>\n\n"
+    for i, bot in enumerate(bots, 1):
+        msg += f"{i}. <code>{bot['bot_id']}</code>\n"
+    await message.reply(msg)
+
+# ফাংশন: অন্য বট অনুমোদিত কি না তা চেক করার জন্য (কোডিংয়ে ব্যবহারের জন্য)
+async def is_bot_authorized(bot_id: int):
+    bot = await client_bots_col.find_one({"bot_id": bot_id})
+    return bool(bot)
+
+# ফাইনাল স্ট্রিম URL যা অন্য বট ব্যবহার করবে
+STREAM_LINK_URL = URL 
+# ==============================================================
